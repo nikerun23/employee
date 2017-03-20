@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 
+mapper 엘리먼트에 namespace="인터페이스" 속성 추가
+인터페이스 내부에 메소드명 정의가 되어 있어야 한다.
+메소드명과 id="식별자"가 일치해야 한다. 
+-->	
+<mapper namespace="com.test.sts.EmployeeDAO">
+
+	<!--
+		SELECT 쿼리 등록은 <select> 엘리먼트 이용.
+		id="식별자" 속성 추가시 인터페이스에 정의된 메소드 이름과 일치해야 하며, 호출 메소드명 역할을 하게 된다.
+		resultType="자료형클래스" 속성 추가시 SELECT 쿼리 내부에 있는 컬럼명의 정보가
+		자료형 클래스의 멤버변수와 일치하는 경우 자동 매핑이 이루어진다.
+		<select> 엘리먼트에 SELECT 쿼리 등록.
+		주의) 문장 끝에 ; 가 있으면 안된다.
+		Dynamic SQL -> 조건 지정을 이용해서 가변 쿼리 작성시 사용 <if>, <choose>, <trim>, <foreach> 등의 엘리먼트 이용
+	-->
+	<select id="employeeList" resultType="com.test.sts.Employee">
+		SELECT employeeId, name, birthday, lunar, lunarName, telephone, 
+			departmentId, departmentName, positionId, positionName, regionId, 
+			regionName, basicPay, extraPay, pay, employeePicFileName, grade 
+			FROM employeeView e
+		<if test="key == 'all'"></if><!-- 전체 -->
+		<if test="key == 'employeeId'">WHERE ${key} = #{value}</if><!-- 번호 -->
+		<if test="key == 'name'">WHERE name=#{value}</if><!-- 이름 -->
+		<if test="key == 'regionName'">WHERE regionName=#{value}</if><!-- 지역 -->
+		<if test="key == 'departmentName'">WHERE departmentName=#{value}</if><!-- 부서 -->
+		<if test="key == 'positionName'">WHERE positionName=#{value}</if><!-- 직위 -->
+			ORDER BY employeeId
+	</select>
+	
+	<!--
+		SELECT 쿼리의 결과가 한 개이면서 기본 자료형인 경우는 해당 자료형을 resultType="" 속성에 표기. 자료형 
+		표기시 클래스 자료형으로 표기.
+		예를 들어, int -> java.lang.Integer or Integer,
+		double -> java.lang.Double or Double
+		쿼리 문자열 내부에 특수문자가 포함된 경우 CDATA 섹션 처리 필요.
+	-->
+	<select id="totalCount" resultType="java.lang.Integer">
+		SELECT COUNT(*) AS "count" FROM employeeView
+	</select>
+	
+	<!--
+		INSERT 쿼리는 <insert> 엘리먼트에 등록
+		Grade 클래스의 멤버변수와 일치하는 바인딩 변수가 존재하면 자동 바인딩
+	-->
+	<insert id="employeeAdd">
+		INSERT INTO employee (employeeId, name, ssn, birthday, lunar, telephone, departmentId, 
+			positionId,	regionId, basicPay, extraPay) 
+			VALUES ((SELECT NVL(MAX(employeeId)+1, 1) 
+			FROM employee), #{name}, encrypt(#{ssn}, #{name}), #{birthday}, #{lunar}, #{telephone}, 
+			#{departmentId}, #{positionId},	#{regionId}, #{basicPay}, #{extraPay})
+	</insert>
+	
+	<!--
+		DELETE 쿼리는 <delete> 엘리먼트에 등록
+		Grade 클래스의 멤버변수와 일치하는 바인딩 변수가 존재하면 자동 바인딩
+	-->
+	<delete id="employeRemove">
+		DELETE FROM employee WHERE employeeId = #{employeeId}
+	</delete>
+	
+	<!--
+		UPDATE 쿼리는 <update> 엘리먼트에 등록
+		Grade 클래스의 멤버변수와 일치하는 바인딩 변수가 존재하면 자동 바인딩
+	-->
+	<update id="employeeModify">
+		UPDATE employee SET name=#{name}, birthday=#{birthday}, lunar=#{lunar}, telephone=#{telephone}, 
+		departmentId=#{departmentId}, positionId=#{positionId}, regionId=#{regionId}, basicPay=#{basicPay}, extraPay=#{extraPay} 
+			WHERE employeeId=#{employeeId}
+	</update>
+	
+		
+	
+</mapper>
