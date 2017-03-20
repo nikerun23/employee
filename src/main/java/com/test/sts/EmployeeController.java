@@ -90,6 +90,17 @@ public class EmployeeController {
 		
 	}
 	
+	@RequestMapping(value = "/ajaxpicture", method = RequestMethod.POST)
+	public String ajaxpicture(Employee emp) {
+		// 수정 요청 데이터 수신 처리 -> 스프링이 자동 수신 (자료형 클래스 준비 or 멤버 변수 준비)
+		List<Employee> list = employeeDAO.pictureList(emp);
+		System.out.println(list.get(0).getEmployeePicFileName());
+		
+		/* View 정보를 반환하는 부분 */
+		return "ajaxpicture";
+		
+	}
+	
 	
 	
 }

@@ -27,7 +27,7 @@ public interface EmployeeDAO {
 	public int pictureModify(Employee emp);
 	
 	// 사진 정보 검색 출력용 메소드
-	public List<Employee> pictureList(String key, String value);
+	public List<Employee> pictureList(Employee emp);
 	
 	//로그인 메소드 (관리자 또는 일반사용자)
 	public String login(String id, String pw, String admin);

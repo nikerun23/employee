@@ -67,7 +67,7 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	}
 
 	@Override
-	public List<Employee> pictureList(String key, String value) {
+	public List<Employee> pictureList(Employee emp) {
 		// TODO Auto-generated method stub
 		return null;
 	}
