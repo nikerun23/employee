@@ -89,7 +89,7 @@ $(document).ready(function() {
 			<div>
 				<h1 style="font-size: x-large;">
 					<img src="${pageContext.request.contextPath}/resources/img/googlelogo.png" alt="logo"
-					style="vertical-align: bottom;"> 직원관리<small>v2.0</small>
+					style="vertical-align: bottom;"> 직원관리<small>v5.0</small>
 				</h1>
 			</div>
 			<div>

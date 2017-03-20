@@ -71,9 +71,7 @@ public class EmployeeController {
 		
 		List<Region> regionList = regionDAO.regionList();
 		List<Department> departmentList = departmentDAO.departmentList();
-		
-		Map<String, String> map = null;
-		List<Position> positionList = positionDAO.positionList(map);
+		List<Position> positionList = positionDAO.positionList();
 		
 		model.addAttribute("regionList", regionList);
 		model.addAttribute("departmentList", departmentList);

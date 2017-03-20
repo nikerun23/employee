@@ -15,9 +15,9 @@ public class PositionDAOImpl implements PositionDAO {
 	private SqlSession sqlSession;
 	
 	@Override
-	public List<Position> positionList(Map<String, String> map) {
+	public List<Position> positionList() {
 		PositionDAO dao = sqlSession.getMapper(PositionDAO.class);
-		List<Position> list = dao.positionList(map);
+		List<Position> list = dao.positionList();
 		return list;
 	}
 

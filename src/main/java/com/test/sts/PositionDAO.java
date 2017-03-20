@@ -5,7 +5,7 @@ import java.util.Map;
 
 public interface PositionDAO {
 
-	public List<Position> positionList(Map<String, String> map);
+	public List<Position> positionList();
 	
 	public int add(Position p);
 	

@@ -20,7 +20,9 @@ mapper 엘리먼트에 namespace="인터페이스" 속성 추가
 		Dynamic SQL -> 조건 지정을 이용해서 가변 쿼리 작성시 사용 <if>, <choose>, <trim>, <foreach> 등의 엘리먼트 이용
 	-->
 	<select id="positionList" resultType="com.test.sts.Position">
-		
+		SELECT positionId, positionName, minBasicPay, delCheck 
+			FROM positionView
+			ORDER BY positionId
 	</select>
 	
 </mapper>
