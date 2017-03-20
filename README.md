@@ -9,3 +9,6 @@
 * Git(SourceTree), GitHub
 * HTML, CSS, BootStrap, JavaScript, jQuery
 * Oracle, Apache Tomcat v8.0, Eclipse
+
+### 샘플 이미지
+![직원관리 시스템](https://cloud.githubusercontent.com/assets/25098075/24091965/d1973bfe-0d8e-11e7-91ce-2a8c067be22c.jpg)
