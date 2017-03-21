@@ -25,7 +25,7 @@ mapper 엘리먼트에 namespace="인터페이스" 속성 추가
 			regionName, basicPay, extraPay, pay, employeePicFileName, grade 
 			FROM employeeView e
 		<if test="key == 'all'"></if><!-- 전체 -->
-		<if test="key == 'employeeId'">WHERE ${key} = #{value}</if><!-- 번호 -->
+		<if test="key == 'employeeId'">WHERE employeeId = #{value}</if><!-- 번호 -->
 		<if test="key == 'name'">WHERE name=#{value}</if><!-- 이름 -->
 		<if test="key == 'regionName'">WHERE regionName=#{value}</if><!-- 지역 -->
 		<if test="key == 'departmentName'">WHERE departmentName=#{value}</if><!-- 부서 -->
@@ -74,16 +74,21 @@ mapper 엘리먼트에 namespace="인터페이스" 속성 추가
 			WHERE employeeId=#{employeeId}
 	</update>
 	
+	<!-- 사진 파일명 검색 -->
 	<select id="pictureList" resultType="com.test.sts.Employee">
 		SELECT employeeId, employeePicFileName 
 			FROM employeepicture
 			WHERE employeeId = #{employeeId}
 	</select>
-	
+	<!-- 사진 파일명 추가 -->
 	<insert id="pictureAdd">
 		INSERT INTO employeePicture (employeeId, employeePicFileName) 
 			VALUES(#{employeeId},#{employeePicFileName})
 	</insert>
-		
+	<!-- 사진 파일명 변경 -->
+	<update id="pictureModify">
+		UPDATE employeepicture SET employeePicFileName = #{employeePicFileName} 
+			WHERE employeeId = #{employeeId}
+	</update>
 	
 </mapper>

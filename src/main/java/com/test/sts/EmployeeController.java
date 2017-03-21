@@ -43,22 +43,25 @@ public class EmployeeController {
 	 */
 	// 직원 명단  전체 및 검색 출력용 메소드
 	@RequestMapping(value = "/employeelist.it", method = { RequestMethod.GET, RequestMethod.POST })
-	public String employeelist(ModelMap model, String skey, String svalue) {
+	public String employeelist(ModelMap model, String key, String value) {
 
 		// 검색 요청 데이터 수신 처리 -> 스프링이 자동 수신 (자료형 클래스 준비 or 멤버 변수 준비)
-
 		List<Employee> list = null;
 		int totalcount = 0;
 		int count = 0;
 
-		if (skey == null) {
-			skey = "all";
-			svalue = "";
+		if (key == null) {
+			key = "all";
+			value = "";
+		} else {
+			// 검색 option 선택
+			String[] str = {"","employeeId","name","regionName","departmentName","positionName"};
+			key = str[Integer.parseInt(key)];
 		}
 		
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("key", skey);
-		map.put("value", svalue);
+		map.put("key", key);
+		map.put("value", value);
 		
 		list = employeeDAO.employeeList(map);
 		totalcount = employeeDAO.totalCount();
@@ -68,8 +71,8 @@ public class EmployeeController {
 		model.addAttribute("list", list);
 		model.addAttribute("totalcount", totalcount);
 		model.addAttribute("count", count);
-		model.addAttribute("skey", skey);
-		model.addAttribute("svalue", svalue);
+		model.addAttribute("skey", key);
+		model.addAttribute("svalue", value);
 		
 		/* View 정보를 반환하는 부분 */
 		return "employeelist"; // "/WEB-INF/views/employeelist.jsp"
@@ -108,7 +111,7 @@ public class EmployeeController {
 		List<Employee> list = null;
 		
 		Map<String, String> map = new HashMap<String, String>();
-		map.put("key", "employeeId");
+		map.put("key", "1");
 		map.put("value", employeeId);
 		
 		list = employeeDAO.employeeList(map);
@@ -130,10 +133,8 @@ public class EmployeeController {
 	@RequestMapping(value = "/ajaxpicture.it", method = RequestMethod.POST)
 	public String ajaxpicture(ModelMap model, Employee emp) {
 		// 수정 요청 데이터 수신 처리 -> 스프링이 자동 수신 (자료형 클래스 준비 or 멤버 변수 준비)
-		System.out.println("ajaxpicture호출");
 		String result = null;
 		List<Employee> list = employeeDAO.pictureList(emp);
-		System.out.println(list.get(0).getEmployeePicFileName());
 		result = list.get(0).getEmployeePicFileName();
 		model.addAttribute("result", result);
 		
@@ -141,58 +142,69 @@ public class EmployeeController {
 		return "ajaxpicture";
 	}
 	
-	// 직원 사진 추가
+	// 직원 사진 추가 및 변경
 	@RequestMapping(value = "/employeepictureinsert.it", method = { RequestMethod.GET, RequestMethod.POST })
-	public String employeepictureinsert(Employee file, BindingResult result) throws IOException {
+	public String employeepictureinsert(Employee emp, BindingResult result) throws IOException {
 		System.out.println("employeepictureinsert 메소드 호출");
 
 		if (result.hasErrors()) {
 			System.out.println("validation errors");
 			return "redirect:fileuploaderror.it";
 		} else {
-			System.out.println("file.getFile()="+file.getFile());
+			System.out.println("file.getFile()="+emp.getFile());
 			//업로된 파일에 대한 객체 정보
-			MultipartFile multipartFile = file.getFile();
+			MultipartFile multipartFile = emp.getFile();
 
 			System.out.println("multipartFile="+multipartFile);
 			// Create a folder picture under WebContent sub-folder.
 			// 주의) ServletContext 객체를 이용한 경로명 확보 필수
 			String uploadPath = context.getRealPath("") + "resources/picture" + File.separator;
-
 			// 파일 중복 검사 과정 추가 or 임의의 파일명 동적 생성 -> 사용자 직접 작성
 			String newFileName = FileRenamePolicy.rename(multipartFile.getOriginalFilename());
-
 			// 파일 타입 확인
 			String contentType = multipartFile.getContentType();
 			// 파일 사이즈 확인
 			long fileSize = multipartFile.getSize();
-
 			// 사진 -> image/jpeg, image/png
-			if ((contentType.equals("image/jpeg") || contentType.equals("image/png")) && fileSize <= 1024 * 500) {
-				
-				// 파일 업로드 액션
-				FileCopyUtils.copy(multipartFile.getBytes(), new File(uploadPath + newFileName));
-
-				System.out.println("uploadPath="+uploadPath);
-				System.out.println("contentType="+contentType);
-				System.out.println("oldFileName="+multipartFile.getOriginalFilename());
-				System.out.println("newFileName="+newFileName);
-				// DB에 사진 정보 저장
-				
-				System.out.println("file.getEmployeeId()="+file.getEmployeeId());
-				System.out.println("file.getEmployeePicFileName()="+file.getEmployeePicFileName());
-				
-				file.setEmployeePicFileName(newFileName);
-				
-				employeeDAO.pictureAdd(file);
-				
-				return "redirect:employeelist.it";// "WEB-INF/source/employeelist.jsp"
-				
-			} else {
+			if ((!contentType.equals("image/jpeg") || !contentType.equals("image/png")) && fileSize >= 1024 * 500) {
 				return "redirect:fileuploaderror.it";
 			}
+			
+			// 기존 사진 저장여부 검사
+			List<Employee> list = employeeDAO.pictureList(emp);
+			if (list.size() > 0) {
+				// 사진이 존재하면 삭제 진행
+				String picFileName = list.get(0).getEmployeePicFileName();
+				// 파일 삭제
+				pictureDelete(uploadPath, picFileName);
+				// 새로운 사진 업로드 액션
+				FileCopyUtils.copy(multipartFile.getBytes(), new File(uploadPath + newFileName));
+				// 새로 업로드한 파일명으로 DB 저장
+				emp.setEmployeePicFileName(newFileName);
+				// ID와 변경할 이미지 파일명이 담겨져 있다.
+				employeeDAO.pictureModify(emp);
+				
+				return "redirect:employeelist.it";// "WEB-INF/source/employeelist.jsp"
+			}
+			
+			// 파일 업로드 액션
+			FileCopyUtils.copy(multipartFile.getBytes(), new File(uploadPath + newFileName));
 
+			// DB에 사진 정보 저장
+			emp.setEmployeePicFileName(newFileName);
+			
+			employeeDAO.pictureAdd(emp);
+			
+			return "redirect:employeelist.it";// "WEB-INF/source/employeelist.jsp"
 		}
+	}
+	
+	// 사진 파일 삭제
+	private Boolean pictureDelete(String path, String fileName) {
+		boolean result = false;
+		// 기존 파일이 삭제되면 true 리턴
+		result = new File(path+fileName).delete();
+		return result; 
 	}
 	
 	// 최소기본급 검색

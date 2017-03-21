@@ -69,8 +69,10 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 	// 직원 사진 수정
 	@Override
 	public int pictureModify(Employee emp) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		EmployeeDAO dao = sqlSession.getMapper(EmployeeDAO.class);
+		dao.pictureModify(emp);
+		return result;
 	}
 
 	// 사진 정보 검색 출력용
