@@ -25,4 +25,31 @@ mapper 엘리먼트에 namespace="인터페이스" 속성 추가
 			ORDER BY departmentId
 	</select>
 	
+	<!--
+		INSERT 쿼리는 <insert> 엘리먼트에 등록
+		Grade 클래스의 멤버변수와 일치하는 바인딩 변수가 존재하면 자동 바인딩
+	-->
+	<insert id="add">
+		INSERT INTO department (departmentId, departmentName) 
+			VALUES ((SELECT NVL(MAX(departmentId)+1, 1) 
+			FROM department), #{departmentName})
+	</insert>
+	
+	<!--
+		DELETE 쿼리는 <delete> 엘리먼트에 등록
+		Grade 클래스의 멤버변수와 일치하는 바인딩 변수가 존재하면 자동 바인딩
+	-->
+	<delete id="remove">
+		DELETE FROM department WHERE departmentId = #{departmentId}
+	</delete>
+	
+	<!--
+		UPDATE 쿼리는 <update> 엘리먼트에 등록
+		Grade 클래스의 멤버변수와 일치하는 바인딩 변수가 존재하면 자동 바인딩
+	-->
+	<update id="modify">
+		UPDATE department SET departmentName = #{departmentName} 
+			WHERE departmentId = #{departmentId}
+	</update>
+	
 </mapper>

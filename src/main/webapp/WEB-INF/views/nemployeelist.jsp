@@ -43,7 +43,7 @@ $(document).ready(function() {
 			$("div#pictureModal h4").text(name+"의 사진");
 		
 			//이미지 동적 출력 과정 추가
-			$("div#pictureModal img").attr("src", "resources/picture/"+data);
+			$("div#pictureModal img").attr("src", "picture/"+data);
 			
 			//modal 창 호출 액션 
 			$("div#pictureModal").modal();
@@ -51,30 +51,6 @@ $(document).ready(function() {
 		});
 		
 		
-	});
-	
-	//사진등록 버튼에 대한 클릭 이벤트 등록
-	$("button.pictureInsertForm").on("click", function() {
-
-		//직원 번호를 사전에 hidden form에 지정.
-		//현재 직원이 사진이 있는지 확인 후 결과를 hidden form에 지정.
-		//console.log($(this).parents("tr").find("td button.picture").length);
-	
-		$("#pictureInsertForm #employeeid").val($(this).parents("tr").children().eq(0).text());	
-		$("#pictureInsertForm #picturekey").val($(this).parents("tr").find("td button.picture").length);
-		
-		$("#pictureInsertForm").modal();
-	});
-	
-	
-	//삭제 버튼에 대한 클릭 이벤트 등록
-	//직원번호->hidden form에 지정
-	//직원번호, 이름을 comment 영역에 출력
-	//삭제 모달창 호출
-	$("button.delete").on("click",function(){
-		$("#deleteFormModal #employeeId").val($(this).val());
-		$("#deleteFormModal #comment").text("직원번호:"+ $(this).val() +" ,이름:"+ $(this).parents("tr").find("span").text());
-		$("#deleteFormModal").modal();
 	});
 	
 	
@@ -95,13 +71,11 @@ $(document).ready(function() {
 			</div>
 			<div>
 				<ul class="nav nav-pills nav-justified ">
-					<li class="active"><a href="employeelist.it">직원관리</a></li>
-					<li><a href="regionlist.it">지역관리</a></li>
-					<li><a href="departmentlist.it">부서관리</a></li>
-					<li><a href="positionlist.it">직위관리</a></li>
+
+					<li class="active"><a href="nemployeelist.it">직원관리</a></li>
 					
 					<%-- 세션 정보를 EL 표현으로 출력 --%>
-					<li><a href="logout.it" style="color: red">${sessionScope.adminloginkey} 로그아웃</a></li>
+					<li><a href="userlogout.it" style="color: red">${sessionScope.userloginkey} 로그아웃</a></li>
 					
 					
 				</ul>
@@ -144,9 +118,6 @@ $(document).ready(function() {
 								<th>기본급</th>
 								<th>수당</th>
 								<th>급여</th>
-								<th>사진등록</th>
-								<th>삭제</th>
-								<th>수정</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -168,8 +139,6 @@ $(document).ready(function() {
 								<td>1,500,000</td>
 								<td>1,000,000</td>
 								<td>2,500,000</td>
-								<td><button type="button" class="btn btn-default btn-xs">사진등록</button></td>
-								<td><button type="button" class="btn btn-default btn-xs">삭제</button></td>
 							</tr>
 							 --> 
 							 <c:forEach var="emp" items="${list}">
@@ -190,12 +159,6 @@ $(document).ready(function() {
 						 		<td><fmt:formatNumber value="${emp.basicPay}" groupingUsed="true"></fmt:formatNumber></td>
 						 		<td><fmt:formatNumber value="${emp.extraPay}" groupingUsed="true"></fmt:formatNumber></td>
 						 		<td><fmt:formatNumber value="${emp.pay}" groupingUsed="true"></fmt:formatNumber></td>
-						 		<td><button type="button" class="btn btn-default btn-xs  pictureInsertForm">사진등록</button></td>
-						 		<td><button type="button" class="btn btn-default btn-xs  delete" value="${emp.employeeId}">삭제</button></td>
-						 		
-						 		<%-- 수정 액션을 위한 버튼(<a> 태그)에 getString 직원번호 추가 --%>
-						 		<td><a href="employeeupdateform.it?employeeId=${emp.employeeId}" role="button" class="btn btn-default btn-xs">수정</a></td>
-						 		
 							</tr>
 							 </c:forEach>
 
@@ -203,7 +166,6 @@ $(document).ready(function() {
 					</table>
 
 					<form class="form-inline" role="form" method="post">
-						<a href="employeeinsertform.it" class="btn btn-default">Add</a>
 						<button type="button" class="btn btn-default">
 							<%-- TotalCount <span class="badge">2</span> --%>
 							TotalCount <span class="badge">${totalcount}</span>
@@ -246,82 +208,6 @@ $(document).ready(function() {
 			</div>
 		</div>
 
-	</div>
-
-
-	<div id="pictureInsertForm" class="modal fade" role="dialog">
-		<div class="modal-dialog">
-
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">사진 등록</h4>
-				</div>
-				<div class="modal-body">
-
-					<%-- 파일 업로드를 위한 설정 추가. enctype="multipart/form-data" --%>
-					<form role="form" action="employeepictureinsert.it" method="post"
-						enctype="multipart/form-data">
-						
-						<%-- 파일 업로드를 위한 직원 번호 전송 준비 --%>
-						<input type="hidden" id="employeeid" name="employeeId" value="">
-						<%-- 파일 업로드를 위한 사진 액션 구분(신규 등록 0, 수정 1) --%>
-						<input type="hidden" id="picturekey" name="picturekey" value="0">
-						
-						<div class="form-group">
-							<label for="birthday">사진등록 (only JPG, 100K byte 이내):</label> <input
-								type="file" class="form-control" id="fileName"
-								name="file" required="required">
-						</div>
-						<button type="submit" class="btn btn-default">Submit</button>
-					</form>
-
-
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				</div>
-			</div>
-
-		</div>
-	</div>
-	
-	
-	<!-- Delete Form Modal -->
-	<div id="deleteFormModal" class="modal fade" role="dialog">
-		<div class="modal-dialog">
-
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-					<h4 class="modal-title">직원 삭제</h4>
-				</div>
-				<div class="modal-body">
-
-					<p>현재 선택한 직원 정보(<span id="comment"></span>)를 삭제할까요?</p>
-
-					<!-- 삭제 진행시 번호와 패스워드를 서버로 전송해야 한다. -->
-					<form action="employeedelete.it" method="post">
-
-						<!-- 번호 전송은 hidden form 사용 -->
-						<%-- hidden form 추가 --%>
-						<input type="hidden" id="employeeId" name="employeeId" value="">
-
-
-						<button type="submit" class="btn btn-default">삭제</button>
-
-					</form>
-
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default btn-sm"
-						data-dismiss="modal">Close</button>
-				</div>
-			</div>
-
-		</div>
 	</div>
 
 </body>

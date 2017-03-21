@@ -1,12 +1,20 @@
 package com.test.sts;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class Employee {
 
 	private String employeeId, name, ssn, birthday, lunar, lunarName, telephone, departmentId, positionId, regionId,
 			departmentName, positionName, regionName;
+
 	private String employeePicFileName; // 사진 출력용 멤버
+
 	private int basicPay, extraPay, pay;
+
 	private int grade; // 관리자(0), 일반 직원(1) 구분 멤버
+
+	/* 폼 내부에 있는 <input type="file" name="file"> 엘리먼트의 name="" 속성 식별자와 일치해야 한다. */
+	private MultipartFile file; // 이미지 업로드 변수
 
 	public String getEmployeeId() {
 		return employeeId;
@@ -150,6 +158,13 @@ public class Employee {
 
 	public void setGrade(int grade) {
 		this.grade = grade;
+	}
+	
+	public MultipartFile getFile() {
+		return file;
+	}
+	public void setFile(MultipartFile file) {
+		this.file = file;
 	}
 
 }

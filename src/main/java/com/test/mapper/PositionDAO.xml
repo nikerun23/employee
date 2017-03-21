@@ -25,4 +25,36 @@ mapper 엘리먼트에 namespace="인터페이스" 속성 추가
 			ORDER BY positionId
 	</select>
 	
+	<!--
+		INSERT 쿼리는 <insert> 엘리먼트에 등록
+		Grade 클래스의 멤버변수와 일치하는 바인딩 변수가 존재하면 자동 바인딩
+	-->
+	<insert id="add">
+		INSERT INTO position (positionId, positionName, minBasicPay) 
+			VALUES ((SELECT NVL(MAX(positionId)+1, 1) 
+			FROM position), #{positionName}, #{minBasicPay})
+	</insert>
+	
+	<!--
+		DELETE 쿼리는 <delete> 엘리먼트에 등록
+		Grade 클래스의 멤버변수와 일치하는 바인딩 변수가 존재하면 자동 바인딩
+	-->
+	<delete id="remove">
+		DELETE FROM position WHERE positionId = #{positionId}
+	</delete>
+	
+	<!--
+		UPDATE 쿼리는 <update> 엘리먼트에 등록
+		Grade 클래스의 멤버변수와 일치하는 바인딩 변수가 존재하면 자동 바인딩
+	-->
+	<update id="modify">
+		UPDATE position SET positionName = #{positionName}, minBasicPay = #{minBasicPay} 
+			WHERE positionId = #{positionId}
+	</update>
+	
+	<select id="getMinBasicPay" resultType="java.lang.Integer">
+		SELECT minBasicPay FROM positionView 
+			WHERE positionId = #{positionId}
+	</select>
+	
 </mapper>

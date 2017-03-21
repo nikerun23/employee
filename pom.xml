@@ -4,19 +4,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.test</groupId>
 	<artifactId>sts</artifactId>
-	<name>SpringWebMVC</name>
+	<name>guestbook_20170320</name>
 	<packaging>war</packaging>
 	<version>1.0.0-BUILD-SNAPSHOT</version>
 	<properties>
-		<java-version>1.8</java-version>
+		<java-version>1.6</java-version>
 		<org.springframework-version>3.1.1.RELEASE</org.springframework-version>
 		<org.aspectj-version>1.6.10</org.aspectj-version>
 		<org.slf4j-version>1.6.6</org.slf4j-version>
-
 	</properties>
-	<!-- <repositories> <repository> <id>cn.guoyukun.jdbc</id> <name>ORACLE 
-		JDBC Repository</name> <url>https://mvnrepository.com/artifact/cn.guoyukun.jdbc/oracle-ojdbc6</url> 
-		</repository> </repositories> -->
 	<dependencies>
 		<!-- Spring -->
 		<dependency>
@@ -120,16 +116,8 @@
 			<version>4.7</version>
 			<scope>test</scope>
 		</dependency>
-		
-		<!-- ================ 사용자 정의 ================ -->
-		
-		<!-- Spring JDBC 라이브러리 -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>3.1.1.RELEASE</version>
-		</dependency>
-		
+
+
 		<!-- MyBatis 라이브러리 -->
 		<dependency>
 			<groupId>org.mybatis</groupId>
@@ -141,7 +129,32 @@
 			<artifactId>mybatis</artifactId>
 			<version>3.2.7</version>
 		</dependency>
-		
+
+		<!-- JSON 라이브러리 -->
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1</version>
+		</dependency>
+
+		<!-- 오라클 데이터베이스 라이브러리 WEB-INF 폴더 하위에 lib 폴더 생성 후 ojdbc6.jar 파일 복사 -->
+		<dependency>
+			<groupId>oracle.jdbc</groupId>
+			<artifactId>OracleDriver</artifactId>
+			<version>12.1.0.2.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/ojdbc6.jar</systemPath>
+		</dependency>
+
+		<!-- Spring JDBC 라이브러리 -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>3.1.1.RELEASE</version>
+		</dependency>
+
+
+
 		<!-- Spring Security 라이브러리 -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -159,28 +172,18 @@
 			<version>3.1.1.RELEASE</version>
 		</dependency>
 
-
-		<!-- 스프링 파일 업로드 라이브러리 -->
-
-		<!-- JSON 라이브러리 -->
+		<!-- 아파치 파일 업로드 -->
 		<dependency>
-			<groupId>com.googlecode.json-simple</groupId>
-			<artifactId>json-simple</artifactId>
-			<version>1.1</version>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
 		</dependency>
-		
-		<!-- 
-		오라클 데이터베이스 라이브러리
-		WEB-INF 폴더 하위에 lib 폴더 생성 후 ojdbc6.jar 파일 복사
-		-->
 		<dependency>
-			<groupId>oracle.jdbc</groupId>
-			<artifactId>OracleDriver</artifactId>
-			<version>12.1.0.2.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ojdbc6.jar</systemPath>
-		</dependency>
-		
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.3.2</version>
+		</dependency>	
+
 	</dependencies>
 	<build>
 		<plugins>

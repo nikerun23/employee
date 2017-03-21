@@ -50,7 +50,7 @@
 	
 	function ajax(positionId) {
 		//Ajax 요청
-		$.post("ajaxminbasicpay.do", {positionId:positionId}, function(data) {
+		$.post("ajaxminbasicpay.it", {positionId:positionId}, function(data) {
 			//메시지 수정
 			$("#basicPay").attr("placeholder", "기본급 (최소 "+data+"원 이상)");
 			//최소값 지정
@@ -66,19 +66,19 @@
 		<div style="margin-bottom: 1%;">
 			<div>
 				<h1 style="font-size: x-large;">
-					<img src="${pageContext.request.contextPath}/img/googlelogo.png" alt="logo"
+					<img src="${pageContext.request.contextPath}/resources/img/sist_logo.png" alt="logo"
 					style="vertical-align: bottom;"> 직원관리<small>v2.0</small>
 				</h1>
 			</div>
 			<div>
 				<ul class="nav nav-pills nav-justified ">
-					<li class="active"><a href="employeelist.do">직원관리</a></li>
-					<li><a href="regionlist.do">지역관리</a></li>
-					<li><a href="departmentlist.do">부서관리</a></li>
-					<li><a href="positionlist.do">직위관리</a></li>
+					<li class="active"><a href="employeelist.it">직원관리</a></li>
+					<li><a href="regionlist.it">지역관리</a></li>
+					<li><a href="departmentlist.it">부서관리</a></li>
+					<li><a href="positionlist.it">직위관리</a></li>
 					
 					<%-- 세션 정보를 EL 표현으로 출력 --%>
-					<li><a href="logout.do" style="color: red">${sessionScope.adminloginkey} 로그아웃</a></li>
+					<li><a href="logout.it" style="color: red">${sessionScope.adminloginkey} 로그아웃</a></li>
 
 				</ul>
 			</div>
@@ -88,7 +88,7 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">직원 수정</div>
 				<div class="panel-body">
-					<form role="form" action="employeeupdate.do" method="post">
+					<form role="form" action="employeeupdate.it" method="post">
 					
 						<%-- 수정 액션을 위한 직원번호 폼 추가 --%>
 						<%-- 

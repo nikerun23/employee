@@ -32,7 +32,7 @@
 		<beans:property name="username" value="hyengeun" />
 		<beans:property name="password" value="1234" />
 	</beans:bean>
-
+	
 	<!-- Spring JDBC 환경 설정 제거 -->
 	
 	<!-- MyBatis 환경 설정 추가 -->
@@ -50,5 +50,8 @@
 		<!-- 생성자에 의한 의존주입 -->
 		<beans:constructor-arg index="0" ref="sqlSessionFactory" />
 	</beans:bean>
+	
+	<!-- 파일 업로드 객체 등록 -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 	
 </beans:beans>

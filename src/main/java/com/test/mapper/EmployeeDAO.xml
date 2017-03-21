@@ -74,11 +74,16 @@ mapper 엘리먼트에 namespace="인터페이스" 속성 추가
 			WHERE employeeId=#{employeeId}
 	</update>
 	
-	<select id="pictureList" resultType="java.lang.String">
-		SELECT employeeId, employeepicfilename 
+	<select id="pictureList" resultType="com.test.sts.Employee">
+		SELECT employeeId, employeePicFileName 
 			FROM employeepicture
 			WHERE employeeId = #{employeeId}
 	</select>
+	
+	<insert id="pictureAdd">
+		INSERT INTO employeePicture (employeeId, employeePicFileName) 
+			VALUES(#{employeeId},#{employeePicFileName})
+	</insert>
 		
 	
 </mapper>

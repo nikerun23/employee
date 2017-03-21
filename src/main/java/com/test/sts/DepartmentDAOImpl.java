@@ -14,6 +14,7 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	// 부서 정보 전체 출력
 	@Override
 	public List<Department> departmentList() {
 		DepartmentDAO dao = sqlSession.getMapper(DepartmentDAO.class);
@@ -21,22 +22,31 @@ public class DepartmentDAOImpl implements DepartmentDAO {
 		return list;
 	}
 
+	// 부서 정보 추가
 	@Override
 	public int add(Department d) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		DepartmentDAO dao = sqlSession.getMapper(DepartmentDAO.class);
+		result = dao.add(d);
+		return result;
 	}
 
+	// 부서 정보 삭제
 	@Override
 	public int remove(Department d) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		DepartmentDAO dao = sqlSession.getMapper(DepartmentDAO.class);
+		result = dao.remove(d);
+		return result;
 	}
 
+	// 부서 정보 수정
 	@Override
 	public int modify(Department d) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		DepartmentDAO dao = sqlSession.getMapper(DepartmentDAO.class);
+		result = dao.modify(d);
+		return result;
 	}
 
 }

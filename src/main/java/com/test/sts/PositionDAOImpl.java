@@ -1,8 +1,6 @@
 package com.test.sts;
 
 import java.util.List;
-import java.util.Map;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -14,6 +12,7 @@ public class PositionDAOImpl implements PositionDAO {
 	@Autowired
 	private SqlSession sqlSession;
 	
+	// 직위 정보 전체 출력
 	@Override
 	public List<Position> positionList() {
 		PositionDAO dao = sqlSession.getMapper(PositionDAO.class);
@@ -21,28 +20,41 @@ public class PositionDAOImpl implements PositionDAO {
 		return list;
 	}
 
+	// 직위 정보 추가
 	@Override
 	public int add(Position p) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		PositionDAO dao = sqlSession.getMapper(PositionDAO.class);
+		dao.add(p);
+		return result;
 	}
 
+	// 직위 정보 삭제
 	@Override
 	public int remove(Position p) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		PositionDAO dao = sqlSession.getMapper(PositionDAO.class);
+		dao.remove(p);
+		return result;
 	}
 
-	@Override
-	public int getMinBasicPay(Position p) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
+	// 직위 정보 수정
 	@Override
 	public int modify(Position p) {
-		// TODO Auto-generated method stub
-		return 0;
+		int result = 0;
+		PositionDAO dao = sqlSession.getMapper(PositionDAO.class);
+		dao.modify(p);
+		return result;
 	}
+	
+	// 최소기본급 검색
+	@Override
+	public int getMinBasicPay(Position p) {
+		int result = 0;
+		PositionDAO dao = sqlSession.getMapper(PositionDAO.class);
+		result = dao.getMinBasicPay(p);
+		return result;
+	}
+
 
 }

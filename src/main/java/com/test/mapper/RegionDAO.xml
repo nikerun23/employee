@@ -25,4 +25,31 @@ mapper 엘리먼트에 namespace="인터페이스" 속성 추가
 			ORDER BY regionId
 	</select>
 	
+	<!--
+		INSERT 쿼리는 <insert> 엘리먼트에 등록
+		Grade 클래스의 멤버변수와 일치하는 바인딩 변수가 존재하면 자동 바인딩
+	-->
+	<insert id="add">
+		INSERT INTO region (regionId, regionName) 
+			VALUES ((SELECT NVL(MAX(regionId)+1, 1) 
+			FROM region), #{regionName})
+	</insert>
+	
+	<!--
+		DELETE 쿼리는 <delete> 엘리먼트에 등록
+		Grade 클래스의 멤버변수와 일치하는 바인딩 변수가 존재하면 자동 바인딩
+	-->
+	<delete id="remove">
+		DELETE FROM region WHERE regionId=#{regionId}
+	</delete>
+	
+	<!--
+		UPDATE 쿼리는 <update> 엘리먼트에 등록
+		Grade 클래스의 멤버변수와 일치하는 바인딩 변수가 존재하면 자동 바인딩
+	-->
+	<update id="modify">
+		UPDATE region SET regionName = #{regionName} 
+			WHERE regionId = #{regionId}
+	</update>
+	
 </mapper>
