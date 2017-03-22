@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestWrapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
@@ -77,12 +78,45 @@ public class EmployeeController {
 		/* View 정보를 반환하는 부분 */
 		return "employeelist"; // "/WEB-INF/views/employeelist.jsp"
 	}
+	// 사용자용 nemployeelist
+	@RequestMapping(value = "/nemployeelist.it", method = { RequestMethod.GET, RequestMethod.POST })
+	public String nemployeelist(ModelMap model, String key, String value) {
+		// 검색 요청 데이터 수신 처리 -> 스프링이 자동 수신 (자료형 클래스 준비 or 멤버 변수 준비)
+		List<Employee> list = null;
+		int totalcount = 0;
+		int count = 0;
+
+		if (key == null) {
+			key = "all";
+			value = "";
+		} else {
+			// 검색 option 선택
+			String[] str = {"","employeeId","name","regionName","departmentName","positionName"};
+			key = str[Integer.parseInt(key)];
+		}
+		
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("key", key);
+		map.put("value", value);
+		
+		list = employeeDAO.employeeList(map);
+		totalcount = employeeDAO.totalCount();
+		count = list.size();
+		
+		/* 서블릿 액션의 결과를 JSP 페이지(View)에 전달하는 경우 Model 객체를 사용한다. */
+		model.addAttribute("list", list);
+		model.addAttribute("totalcount", totalcount);
+		model.addAttribute("count", count);
+		model.addAttribute("skey", key);
+		model.addAttribute("svalue", value);
+		
+		/* View 정보를 반환하는 부분 */
+		return "nemployeelist"; // "/WEB-INF/views/nemployeelist.jsp"
+	}
+	
 	
 	@RequestMapping(value = "/employeeinsertform.it", method = { RequestMethod.GET, RequestMethod.POST })
 	public String employeeinsertform(ModelMap model) {
-
-		// 검색 요청 데이터 수신 처리 -> 스프링이 자동 수신 (자료형 클래스 준비 or 멤버 변수 준비)
-		
 		List<Region> regionList = regionDAO.regionList();
 		List<Department> departmentList = departmentDAO.departmentList();
 		List<Position> positionList = positionDAO.positionList();
@@ -97,7 +131,6 @@ public class EmployeeController {
 	// 직원 정보 추가
 	@RequestMapping(value = "/employeeinsert.it", method = RequestMethod.POST)
 	public String employeeinsert(Employee emp) {
-		// 수정 요청 데이터 수신 처리 -> 스프링이 자동 수신 (자료형 클래스 준비 or 멤버 변수 준비)
 		employeeDAO.employeeAdd(emp);
 		
 		/* View 정보를 반환하는 부분 */
@@ -107,7 +140,6 @@ public class EmployeeController {
 	// 직원 정보 수정
 	@RequestMapping(value = "/employeeupdateform.it", method = { RequestMethod.GET, RequestMethod.POST })
 	public String employeeupdateform(ModelMap model, String employeeId) {
-		// 수정 요청 데이터 수신 처리 -> 스프링이 자동 수신 (자료형 클래스 준비 or 멤버 변수 준비)
 		List<Employee> list = null;
 		
 		Map<String, String> map = new HashMap<String, String>();
@@ -132,7 +164,6 @@ public class EmployeeController {
 	// 사진 정보 검색 출력용
 	@RequestMapping(value = "/ajaxpicture.it", method = RequestMethod.POST)
 	public String ajaxpicture(ModelMap model, Employee emp) {
-		// 수정 요청 데이터 수신 처리 -> 스프링이 자동 수신 (자료형 클래스 준비 or 멤버 변수 준비)
 		String result = null;
 		List<Employee> list = employeeDAO.pictureList(emp);
 		result = list.get(0).getEmployeePicFileName();
@@ -210,7 +241,6 @@ public class EmployeeController {
 	// 최소기본급 검색
 	@RequestMapping(value = "/ajaxminbasicpay.it", method = RequestMethod.POST)
 	public String ajaxminbasicpay(ModelMap model, Position p) {
-		// 수정 요청 데이터 수신 처리 -> 스프링이 자동 수신 (자료형 클래스 준비 or 멤버 변수 준비)
 		String result = "0";
 		result = String.valueOf(positionDAO.getMinBasicPay(p));
 		
@@ -220,5 +250,43 @@ public class EmployeeController {
 		return "ajaxminbasicpay";
 	}
 	
+	// 로그인
+	@RequestMapping(value = "/loginform.it", method = RequestMethod.GET)
+	public String loginform() {
+		
+		/* View 정보를 반환하는 부분 */
+		return "loginform";
+	}
+	
+	// 로그아웃
+	@RequestMapping(value = "/logoutform.it", method = RequestMethod.GET)
+	public String logoutform() {
+		
+		/* View 정보를 반환하는 부분 */
+		return "logoutform";
+	}
+	
+	// 로그인실패
+	@RequestMapping(value = "/loginfail.it", method = RequestMethod.GET)
+	public String loginfail() {
+		
+		/* View 정보를 반환하는 부분 */
+		return "loginfail";
+	}
+	
+	// 계정별 로그인
+	@RequestMapping(value = "/loginresult.it", method = RequestMethod.GET)
+	public String loginresult(SecurityContextHolderAwareRequestWrapper request) {
+		
+		/* View 정보를 반환하는 부분 */
+		/*로그인한 계정의 Roll이 ROLE_ADMIN이면 employeelist.it로 이동*/
+		String result= "";
+		if (request.isUserInRole("ROLE_ADMIN")) {
+			result = "redirect:employeelist.it";
+		} else {
+			result = "redirect:nemployeelist.it";
+		}
+		return result;
+	}
 	
 }

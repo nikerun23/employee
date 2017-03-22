@@ -28,7 +28,6 @@ public class RegionController {
 	public String regionlist(ModelMap model) {
 		
 		List<Region> list = null;
-		
 		list = regionDAO.regionList();
 		
 		/* 서블릿 액션의 결과를 JSP 페이지(View)에 전달하는 경우 Model 객체를 사용한다. */
@@ -41,7 +40,6 @@ public class RegionController {
 	// 지역 정보 추가
 	@RequestMapping(value = "/regioninsert.it", method = RequestMethod.POST)
 	public String regioninsert(Region r) {
-		// 수정 요청 데이터 수신 처리 -> 스프링이 자동 수신 (자료형 클래스 준비 or 멤버 변수 준비)
 		regionDAO.add(r);
 		/* View 정보를 반환하는 부분 */
 		return "redirect:regionlist.it";
@@ -50,7 +48,6 @@ public class RegionController {
 	// 지역 정보 삭제
 	@RequestMapping(value = "/regiondelete.it", method = RequestMethod.POST)
 	public String regiondelete(Region r) {
-		// 수정 요청 데이터 수신 처리 -> 스프링이 자동 수신 (자료형 클래스 준비 or 멤버 변수 준비)
 		regionDAO.remove(r);
 		/* View 정보를 반환하는 부분 */
 		return "redirect:regionlist.it";
@@ -59,7 +56,6 @@ public class RegionController {
 	// 지역 정보 수정
 	@RequestMapping(value = "/regionupdate.it", method = RequestMethod.POST)
 	public String regionupdate(Region r) {
-		// 수정 요청 데이터 수신 처리 -> 스프링이 자동 수신 (자료형 클래스 준비 or 멤버 변수 준비)
 		regionDAO.modify(r);
 		/* View 정보를 반환하는 부분 */
 		return "redirect:regionlist.it";

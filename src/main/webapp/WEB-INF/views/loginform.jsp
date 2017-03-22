@@ -36,15 +36,15 @@
 				<label>정상적인 서비스 사용을 위해서 로그인해야 합니다.</label>
 			</div>
 			<div class="modal-body" style="padding: 40px 50px;">
-				<form role="form" method="post" action="login.it">
+				<form role="form" method="post" action="j_spring_security_check">
 					<div class="form-group">
 						<label for="id"> ID :</label> <input type="text"
-							class="form-control" id="id" name="id" placeholder="Enter ID"
+							class="form-control" id="id" name="j_username" placeholder="Enter ID"
 							required="required">
 					</div>
 					<div class="form-group">
 						<label for="pw"> Password :</label> <input type="password"
-							class="form-control" id="pw" name="pw"
+							class="form-control" id="pw" name="j_password"
 							placeholder="Enter Password" required="required">
 					</div>
 					

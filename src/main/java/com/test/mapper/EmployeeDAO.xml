@@ -52,7 +52,7 @@ mapper 엘리먼트에 namespace="인터페이스" 속성 추가
 		INSERT INTO employee (employeeId, name, ssn, birthday, lunar, telephone, departmentId, 
 			positionId,	regionId, basicPay, extraPay) 
 			VALUES ((SELECT NVL(MAX(employeeId)+1, 1) 
-			FROM employee), #{name}, encrypt(#{ssn}, #{name}), #{birthday}, #{lunar}, #{telephone}, 
+			FROM employee), #{name}, #{ssn}, #{birthday}, #{lunar}, #{telephone}, 
 			#{departmentId}, #{positionId},	#{regionId}, #{basicPay}, #{extraPay})
 	</insert>
 	

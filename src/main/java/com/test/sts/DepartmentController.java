@@ -28,7 +28,6 @@ public class DepartmentController {
 	public String departmentlist(ModelMap model) {
 		
 		List<Department> list = null;
-		
 		list = departmentDAO.departmentList();
 		
 		/* 서블릿 액션의 결과를 JSP 페이지(View)에 전달하는 경우 Model 객체를 사용한다. */
@@ -41,7 +40,6 @@ public class DepartmentController {
 	// 지역 정보 추가
 	@RequestMapping(value = "/departmentinsert.it", method = RequestMethod.POST)
 	public String departmentinsert(Department d) {
-		// 수정 요청 데이터 수신 처리 -> 스프링이 자동 수신 (자료형 클래스 준비 or 멤버 변수 준비)
 		departmentDAO.add(d);
 		/* View 정보를 반환하는 부분 */
 		return "redirect:departmentlist.it";
@@ -50,7 +48,6 @@ public class DepartmentController {
 	// 지역 정보 삭제
 	@RequestMapping(value = "/departmentdelete.it", method = RequestMethod.POST)
 	public String departmentdelete(Department d) {
-		// 수정 요청 데이터 수신 처리 -> 스프링이 자동 수신 (자료형 클래스 준비 or 멤버 변수 준비)
 		departmentDAO.remove(d);
 		/* View 정보를 반환하는 부분 */
 		return "redirect:departmentlist.it";
@@ -59,7 +56,6 @@ public class DepartmentController {
 	// 지역 정보 수정
 	@RequestMapping(value = "/departmentupdate.it", method = RequestMethod.POST)
 	public String departmentupdate(Department d) {
-		// 수정 요청 데이터 수신 처리 -> 스프링이 자동 수신 (자료형 클래스 준비 or 멤버 변수 준비)
 		departmentDAO.modify(d);
 		/* View 정보를 반환하는 부분 */
 		return "redirect:departmentlist.it";

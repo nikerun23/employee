@@ -83,11 +83,4 @@ public class EmployeeDAOImpl implements EmployeeDAO {
 		return list;
 	}
 
-	//로그인 메소드 (관리자 또는 일반사용자)
-	@Override
-	public String login(String id, String pw, String admin) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

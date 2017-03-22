@@ -89,7 +89,7 @@ $(document).ready(function() {
 		<div style="margin-bottom: 1%;">
 			<div>
 				<h1 style="font-size: x-large;">
-					<img src="${pageContext.request.contextPath}/resources/img/sist_logo.png" alt="logo"
+					<img src="${pageContext.request.contextPath}/resources/img/logo.png" alt="logo"
 					style="vertical-align: bottom;"> 직원관리<small>v2.0</small>
 				</h1>
 			</div>
@@ -101,7 +101,7 @@ $(document).ready(function() {
 					<li><a href="positionlist.it">직위관리</a></li>
 					
 					<%-- 세션 정보를 EL 표현으로 출력 --%>
-					<li><a href="logout.it" style="color: red">${sessionScope.adminloginkey} 로그아웃</a></li>
+					<li><a href="j_spring_security_logout" style="color: red">${pageContext.request.userPrincipal.name} 로그아웃</a></li>
 					
 					
 				</ul>
@@ -190,8 +190,8 @@ $(document).ready(function() {
 						 		<td><fmt:formatNumber value="${emp.basicPay}" groupingUsed="true"></fmt:formatNumber></td>
 						 		<td><fmt:formatNumber value="${emp.extraPay}" groupingUsed="true"></fmt:formatNumber></td>
 						 		<td><fmt:formatNumber value="${emp.pay}" groupingUsed="true"></fmt:formatNumber></td>
-						 		<td><button type="button" class="btn btn-default btn-xs  pictureInsertForm">사진등록</button></td>
-						 		<td><button type="button" class="btn btn-default btn-xs  delete" value="${emp.employeeId}">삭제</button></td>
+						 		<td><button type="button" class="btn btn-default btn-xs pictureInsertForm">사진등록</button></td>
+						 		<td><button type="button" class="btn btn-default btn-xs delete" value="${emp.employeeId}">삭제</button></td>
 						 		
 						 		<%-- 수정 액션을 위한 버튼(<a> 태그)에 getString 직원번호 추가 --%>
 						 		<td><a href="employeeupdateform.it?employeeId=${emp.employeeId}" role="button" class="btn btn-default btn-xs">수정</a></td>
@@ -234,7 +234,7 @@ $(document).ready(function() {
 						<div style="text-align: center;">
 						
 							<%-- Ajax 요청에 대한 응답 결과를 가지고 이미지 처리 --%>
-							<img src="picture/noimage.jpg" width="100%">
+							<img src="${pageContext.request.contextPath}/resources/picture/noimage.jpg" width="100%">
 							
 						</div>
 					</div>
@@ -267,7 +267,7 @@ $(document).ready(function() {
 						<%-- 파일 업로드를 위한 직원 번호 전송 준비 --%>
 						<input type="hidden" id="employeeid" name="employeeId" value="">
 						<%-- 파일 업로드를 위한 사진 액션 구분(신규 등록 0, 수정 1) --%>
-						<input type="hidden" id="picturekey" name="picturekey" value="0">
+						<input type="hidden" id="picturekey" name=pictureKey value="0">
 						
 						<div class="form-group">
 							<label for="birthday">사진등록 (only JPG, 100K byte 이내):</label> <input

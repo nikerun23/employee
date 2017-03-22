@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<b:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:b="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<http>
+	
+		<!-- 사용자 지정 로그인폼 페이지 요청주소 및 로그인 성공시, 실패시 요청 주소 지정 -->
+		<form-login login-page="/loginform.it" 
+			default-target-url="/loginresult.it"
+			authentication-failure-url="/loginfail.it" />
+
+		<!-- 로그아웃 요청주소 지정 -->
+		<logout logout-success-url="/logoutform.it" />
+		
+		<!-- 로그인 세션을 가진 사용자만 접근 가능한 요청주소 지정 -->
+		<intercept-url pattern="/employee*.it" access="ROLE_ADMIN" />
+		<intercept-url pattern="/region*.it" access="ROLE_ADMIN" />
+		<intercept-url pattern="/department*.it" access="ROLE_ADMIN" />
+		<intercept-url pattern="/position*.it" access="ROLE_ADMIN" />
+		<intercept-url pattern="/nemployeelist.it" access="ROLE_USER" />
+		 
+	</http>
+	<authentication-manager>
+		<authentication-provider>
+	<!-- 
+			<user-service>
+				로그인 사용자 계정 및 권한(ROLE_ADMIN) 지정
+				<user name="admin" password="1234" authorities="ROLE_ADMIN" />
+			</user-service>
+	 -->
+	 
+	 		<!-- 데이터 베이스 인증방식 -->
+	 		<!-- 계정이름 username, 비밀번호 password, 계정사용가능여부 enabled(1은 true), AS 컬럼명은 수정 불가 -->
+	 		<!-- authorities-by-username-query의 쿼리 중
+	 		SELECT id AS userName, role_name AS authority FROM admin WHERE id=?
+	 		role_name 컬럼에 권한(ROLE_ADMIN)을 넣을 수 있다
+	 		-->
+			<jdbc-user-service data-source-ref="dataSource"
+     			users-by-username-query="SELECT name AS userName, ssn AS password, 1 AS enabled FROM employee WHERE name=?"
+     			authorities-by-username-query="SELECT name AS userName, CASE WHEN grade=0 THEN 'ROLE_ADMIN' ELSE 'ROLE_USER' END authority FROM employee WHERE name=?" />
+		</authentication-provider>
+	</authentication-manager>
+	
+</b:beans>

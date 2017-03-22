@@ -48,7 +48,7 @@ $(document).ready(function() {
 		<div style="margin-bottom: 1%;">
 			<div>
 				<h1 style="font-size: x-large;">
-					<img src="${pageContext.request.contextPath}/resources/img/sist_logo.png" alt="logo"
+					<img src="${pageContext.request.contextPath}/resources/img/logo.png" alt="logo"
 					style="vertical-align: bottom;"> 직원관리<small>v2.0</small>
 				</h1>
 			</div>
@@ -61,7 +61,7 @@ $(document).ready(function() {
 					<li><a href="positionlist.it">직위관리</a></li>
 					
 					<%-- 세션 정보를 EL 표현으로 출력 --%>
-					<li><a href="logout.it" style="color: red">${sessionScope.adminloginkey} 로그아웃</a></li>
+					<li><a href="j_spring_security_logout" style="color: red">${pageContext.request.userPrincipal.name} 로그아웃</a></li>
 
 				</ul>
 			</div>
