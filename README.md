@@ -5,7 +5,7 @@
 
 ### 주요 기술
 * 참여도: **개인프로젝트**
-* JAVA, **Spring, MyBatis, SpringSecurity**, 페이지별 ROLL설정, 이미지 파일 업로드, JSP, EL
+* JAVA, **Spring, MyBatis, SpringSecurity**, 페이지별 ROLL설정, 이미지 파일 업로드, JSP, JSTL, EL
 * Git(SourceTree), GitHub
 * HTML, CSS, BootStrap, JavaScript, jQuery, Ajax
 * Spring Tool Suite, Oracle, Apache Tomcat
